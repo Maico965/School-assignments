@@ -1,0 +1,42 @@
+#include <iostream>
+#include <string>
+#include <list>
+
+using namespace std;
+
+bool checkVowel(char vowel)
+{
+return (vowel == 'A' || vowel== 'E' || vowel == 'I' || vowel == 'O' || vowel == 'U' || vowel == 'a' ||vowel == 'e' || vowel == 'i' || vowel == 'o' ||vowel == 'u');
+}
+
+
+int main()
+{
+string english;
+cout<<"Enter a sentence in english: ";
+getline(cin,english);
+
+
+for(int i=0;i<english.size();i++)
+    {
+          int len = english.length();
+          int pos = -1;
+         for (int i = 0; i < len; i++)
+         {
+                 if (checkVowel(english[i]))
+                 {
+                         pos = i;
+                         break;
+                 }
+        }
+         if (pos == -1)
+        {
+                return -1;
+                english= english.substr(pos) + english.substr(0, pos) + "ay";
+         }
+    }
+
+cout << english;
+
+    return 0;
+}
