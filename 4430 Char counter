@@ -1,0 +1,109 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cctype>
+#include <sstream>
+
+
+
+using namespace std;
+
+
+
+string categorizeToken(const string& token)
+{
+if (token == "int" || token == "float" || token == "double" || token == "char" || token == "void") {
+return "Keyword";
+}
+else if (isdigit(token[0])) {
+return "Integer";
+}
+else if (token == "=" || token == "+" || token == "-" || token == "*" || token == "/" || token == "==" || token == "!=") {
+return "Operator";
+}
+else if (token == ";" || token == "." || token == "{" || token == "}"|| token == "("|| token == ")")
+{
+return "Punctuation";
+}
+else
+{
+return "Identifier";
+}
+}
+
+
+
+
+int main()
+{
+
+ifstream file;
+ofstream outputFile;
+char fileChoice;
+string line;
+string outputFileName;
+cout<<"Please select a file to open:"<<endl;
+cout<<"A-test1-1.txt "<<endl<<"B-test2.txt "<<endl<<"C-test3.txt "<<endl;
+cin>>fileChoice;
+
+if(fileChoice == 'a')
+{
+file.open("test1-1.txt");
+outputFileName="output1.txt";
+}
+else if(fileChoice == 'b')
+{
+file.open("test2.txt");
+outputFileName="output2.txt";
+}
+else if(fileChoice == 'c')
+{
+file.open("test3.txt");
+outputFileName="output3.txt";
+}
+else
+{
+cout<<"Invalid Option, Please enter a valid option:"<<endl;
+cin>>fileChoice;
+}
+
+if(file.is_open())
+{
+cout<<"File opened"<<endl;
+outputFile.open(outputFileName);
+
+if(!outputFile.is_open())
+{
+cout<<"Failed to open output"<<endl;
+}
+
+
+
+while (getline(file, line))
+{
+stringstream ss(line);
+string token;
+while (ss >> token)
+{
+if (ispunct(token.back()))
+{
+outputFile<<"("<< token.substr(0, token.size() - 1)<< ", "<< categorizeToken(token.substr(0, token.size() - 1))<< ")"<< endl;
+outputFile<<"("<< token.back()<< ", "<< categorizeToken(string(1, token.back()))<< ")"<< endl;
+}
+else
+{
+outputFile<<"(" << token<<", "<<categorizeToken(token)<<")"<<endl;
+}
+}
+}
+
+file.close();
+outputFile.close();
+}
+else
+{
+cout<<"Failed to open input"<<endl;
+}
+
+return 0;
+}
